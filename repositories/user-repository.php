@@ -7,7 +7,7 @@ function getUsers()
     ["id" => 1, "name" => "Admin Utama",    "email" => "admin@ski.sch.id",               "role" => "admin"],
     ["id" => 2, "name" => "Budi Santoso",   "email" => "budi.santoso@siswa.ski.sch.id",  "role" => "member"],
     ["id" => 3, "name" => "Siti Aminah",    "email" => "siti.aminah@siswa.ski.sch.id",   "role" => "member"],
-    ["id" => 4, "name" => "Dylan Leonard imut","email" => "richard.m@ski.sch.id",           "role" => "admin"],
+    ["id" => 4, "name" => "Dylan Leonard imut","email" => "dylan_leonard@siswa.ski.sch.id",   "role" => "member"],
   ];
 
   return $users;
