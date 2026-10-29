@@ -1,13 +1,25 @@
 <?php
 require_once __DIR__ . "/../../repositories/book-repository.php";
-require_once __DIR__ . "/../../config/database.php";
+require_once __DIR__ . "/../../repositories/category-repository.php";
 require_once __DIR__ . "/../../middleware/auth.php";
-requireRole(['admin', 'member']);
+requireAuth();
 
-$books = getBooks();
+$search = trim($_GET['search'] ?? "");
+$categoryId = trim($_GET['category_id'] ?? "");
+if(!ctype_digit($categoryId)){
+  $categoryId = "";
+  }
+  
+  $pageTitle = "Manajemen Buku";
+  $pageSubtitle = "Kelola data buku, kategori, dan penulis";
+  $categories = getCategories();
+  
+  $perPage = 2;
+  $currentPage = max(1, intval($_GET['page'] ?? 1));
+  $books = getBooks($search, $categoryId, $currentPage, $perPage);
 
-$pageTitle = "Manajemen Buku";
-$pageSubtitle = "Kelola data buku, kategori, dan penulis";
+  $totalBooks = countOfBooks($search, $categoryId);
+  $totalPages = ceil($totalBooks / $perPage);
 ?>
 
 <!DOCTYPE html>
@@ -36,14 +48,13 @@ $pageSubtitle = "Kelola data buku, kategori, dan penulis";
                 <circle cx="11" cy="11" r="7" />
                 <path d="m21 21-4.3-4.3" />
               </svg>
-              <input type="text" name="search" class="search-input" placeholder="Cari judul buku...">
+              <input value="<?= $search?>" type="text" name="search" class="search-input" placeholder="Cari judul buku...">
             </div>
-            <select name="category" class="filter-select">
+            <select name="category_id" class="filter-select">
               <option value="">Semua Kategori</option>
-              <option value="Fiksi">Fiksi</option>
-              <option value="Sains">Sains</option>
-              <option value="Sejarah">Sejarah</option>
-              <option value="Teknologi">Teknologi</option>
+              <?php foreach ($categories as $category):?>
+                <option <?= $categoryId == $category['id'] ? 'selected' : '' ?> value="<?=$category['id']?>"><?=$category['name']?></option>
+              <?php endforeach?>
             </select>
             <button type="submit" class="btn btn-outline btn-sm">Cari</button>
           </form>
@@ -99,8 +110,21 @@ $pageSubtitle = "Kelola data buku, kategori, dan penulis";
         </div>
 
         <div class="pagination">
-          <span class="pagination-btn is-disabled">&lt;</span>
-          <span class="pagination-btn is-disabled">&gt;</span>
+          <?php if($currentPage > 1):?>
+            <a href="?<?= http_build_query(['search' => $search, 'category_id' => $categoryId, 'page' => $currentPage - 1])?>">
+              <span class="pagination-btn">&lt;</span>
+            </a>
+          <?php else: ?>
+              <span class="pagination-btn is-disabled">&lt;</span>
+          <?php endif;?>
+
+          <?php if($currentPage < $totalPages):?>
+            <a href="?<?= http_build_query(['search' => $search, 'category_id' => $categoryId, 'page' => $currentPage + 1])?>">
+              <span class="pagination-btn">&gt;</span>
+            </a>
+          <?php else: ?>
+              <span class="pagination-btn is-disabled">&gt;</span>
+          <?php endif;?>
         </div>
       </div>
     </main>
