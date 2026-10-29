@@ -106,37 +106,3 @@ function countOfBooks($search, $categoryId)
 
   return $stmt->fetchColumn();
 }
-
-function getCategories()
-{
-  global $pdo;
-
-  $query = "select * from categories";
-  $stmt = $pdo->prepare($query);
-  $stmt->execute();
-
-  return $stmt->fetchAll();
-}
-
-function getCategory()
-{
-  return [
-    'id' => 1,
-    'name' => 'Fiksi',
-    'description' => 'Novel dan cerita rekaan',
-  ];
-}
-
-function isCategoryExists($categoryId)
-{
-  global $pdo;
-
-  $query = "select count(id) from categories where id = :category_id";
-
-  $stmt = $pdo->prepare($query);
-  $stmt->execute([
-    'category_id' => $categoryId
-  ]);
-
-  return $stmt->fetchColumn() > 0;
-}

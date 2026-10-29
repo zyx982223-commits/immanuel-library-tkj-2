@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/../repositories/user-repository.php";
+
 function getRegisterRequest($request) {
     return [
         'name' => trim(htmlspecialchars($request['name'] ?? '')),
@@ -31,7 +32,7 @@ function validateRegister($request) {
     if ($request['password'] === '') {
         $errors['password'] = "Kata sandi wajib diisi";
     } elseif (mb_strlen($request['password']) < 8) {
-        $errors['password'] = "Kata sandi tidak bole kurang dari 8 karakter";
+        $errors['password'] = "Kata sandi tidak boleh kurang dari 8 karakter";
     }
 
     if ($request['password_confirmation'] === '') {
@@ -45,25 +46,23 @@ function validateRegister($request) {
 
 function getLoginRequest($request) {
     return [
-        'email' => $request['email'],
-        'password' => $request['password']
+        'email' => trim($request['email'] ?? ''),
+        'password' => $request['password'] ?? '',
     ];
 }
 
-function validateLogin($request) 
-{
-
+function validateLogin($request) {
     $errors = [];
 
-    if($errors['email'] === '') {
+    if ($request['email'] === '') {
         $errors['email'] = "Email harus diisi";
+    } elseif (filter_var($request['email'], FILTER_VALIDATE_EMAIL) === false) {
+        $errors['email'] = "Email tidak valid";
     }
 
-    if($errors['password'] === '') {
+    if ($request['password'] === '') {
         $errors['password'] = "Kata sandi harus diisi";
     }
 
     return $errors;
 }
-
-?>
