@@ -35,5 +35,7 @@
         <path d="M19 19.5v-1a4.5 4.5 0 0 0-4.5-4.5h-5A4.5 4.5 0 0 0 5 18.5v1" />
         <circle cx="12" cy="7.5" r="4" />
       </svg> Profil Saya</a>
+            <a onclick="return confirm('Apakah anda yakin ingin logout dari aplikasi?')" href="../../actions/auth/logout.php" 
+      style="border: 1px solid white; text-align: center; display: block; margin-top: 10px;">Logout</a>
   </nav>
 </aside>
