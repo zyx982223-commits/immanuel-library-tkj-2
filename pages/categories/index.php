@@ -54,7 +54,7 @@ $pageSubtitle = "Kelola kategori untuk mengelompokkan buku";
                     </div>
                   </td>
                   <td><?= $category['description'] ?></td>
-                  <td><span class="badge badge-muted"><?= $category['total_books'] ?> buku</span></td>
+                  <td><span class="badge badge-muted"><?= $category['books'] ?? 0 ?> buku</span></td>
                   <td>
                     <div class="cell-actions">
                       <a href="edit.php?id=<?= $category['id'] ?>" class="btn btn-outline btn-sm">Edit</a>
